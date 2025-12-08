@@ -12,12 +12,13 @@ const cors = require("cors");
 const router = require("./routes/routes");
 const app = express();
 const { createServer } = require("http");
+const morgan = require("morgan");
 const { TodoList } = require("./models/todolistModel");
 var useragent = require("express-useragent");
 const { Notifications } = require("./models/userModel");
 const server = createServer(app);
 const port = process.env.PORT || 9000;
-const uri = process.env.DB_HOST;
+const uri = process.env.DB_DEV;
 const dbName = process.env.DB_DATABASE;
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -25,6 +26,7 @@ admin.initializeApp({
 app.use(useragent.express());
 app.use(cors());
 app.use(express.json());
+app.use(morgan("dev"));
 app.use("/api", router);
 const io = createSocketServer(server);
 
